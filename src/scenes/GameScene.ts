@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { AudioService } from '../audio/AudioService';
 import { StorageService } from '../utils/StorageService';
+import { GameSettings } from '../utils/GameSettings';
 
 interface Question {
   text: string;
@@ -196,6 +197,11 @@ export class GameScene extends Phaser.Scene {
     // Keyboard controls
     if (this.input.keyboard) {
       this.cursors = this.input.keyboard.createCursorKeys();
+
+      // Atajo: P pasa el nivel al instante (para pruebas)
+      this.input.keyboard.addKey('P').on('down', () => {
+        if (!this.quizActive) this.completeLevel();
+      });
     }
 
     // Overlap trigger between player and orbs
@@ -239,7 +245,8 @@ export class GameScene extends Phaser.Scene {
     // Gravity calculation (F = G * m1 * m2 / r^2)
     // We simplify this into an acceleration vector
     if (distance < 450) {
-      const force = this.gravityStrength / distanceSq;
+      // La fuerza se ajusta en Configuración → Guante (por defecto 50 %)
+      const force = (this.gravityStrength * GameSettings.getGravityPercent() / 100) / distanceSq;
       const accelX = (dx / distance) * force * 100;
       const accelY = (dy / distance) * force * 100;
       this.probe.setAcceleration(accelX, accelY);
@@ -251,7 +258,8 @@ export class GameScene extends Phaser.Scene {
     const controlType = this.registry.get('controlType') || 'keyboard';
     const speed = 200;
 
-    if (controlType === 'pointer') {
+    // Con toque/mouse presionado se sigue el dedo; si no, flechas (teclado o guante)
+    if (controlType === 'pointer' && this.input.activePointer.isDown) {
       this.probe.setAngularVelocity(0);
       const pointer = this.input.activePointer;
       if (pointer.isDown) {

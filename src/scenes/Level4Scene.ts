@@ -270,7 +270,8 @@ export class Level4Scene extends Phaser.Scene {
     const speed = 1000;
     let ax = 0;
 
-    if (controlType === 'pointer') {
+    // Con toque/mouse presionado se sigue el dedo; si no, flechas (teclado o guante)
+    if (controlType === 'pointer' && this.input.activePointer.isDown) {
       const pointer = this.input.activePointer;
       if (pointer.isDown) {
         // Move towards pointer X

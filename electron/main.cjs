@@ -16,6 +16,17 @@ function createWindow () {
   });
 
   win.setMenuBarVisibility(false);
+
+  // Guante (ESP32): Electron no muestra la ventana para elegir puerto serie,
+  // así que se elige solo la placa ESP32 (fabricante 0x303A) y se da permiso.
+  const ses = win.webContents.session;
+  ses.on('select-serial-port', (event, portList, _webContents, callback) => {
+    event.preventDefault();
+    const esp = portList.find((p) => (p.vendorId || '').toLowerCase() === '303a');
+    callback(esp ? esp.portId : '');
+  });
+  ses.setPermissionCheckHandler((_wc, permission) => permission === 'serial');
+  ses.setDevicePermissionHandler((details) => details.deviceType === 'serial');
   win.loadFile(path.join(__dirname, '../dist/index.html'));
 }
 

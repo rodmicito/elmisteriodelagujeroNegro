@@ -149,14 +149,31 @@ export class ConfigScene extends Phaser.Scene {
     // RESET PROGRESS BUTTON
     const btnReset = this.add.graphics();
     btnReset.fillStyle(0xd32f2f, 1); // Red color for danger
-    btnReset.fillRoundedRect(width / 2 - 120, height / 2 + 130, 240, 40, 8);
+    btnReset.fillRoundedRect(width / 2 - 235, height / 2 + 130, 225, 40, 8);
 
-    const btnResetText = this.add.text(width / 2, height / 2 + 150, 'REINICIAR PROGRESO', {
+    const btnResetText = this.add.text(width / 2 - 122, height / 2 + 150, 'REINICIAR PROGRESO', {
       font: 'bold 16px "Outfit", "Inter", sans-serif',
       color: '#ffffff'
     }).setOrigin(0.5);
 
-    const resetZone = this.add.zone(width / 2, height / 2 + 150, 240, 40).setInteractive({ useHandCursor: true });
+    const resetZone = this.add.zone(width / 2 - 122, height / 2 + 150, 225, 40).setInteractive({ useHandCursor: true });
+
+    // GLOVE (SENSOR) SETTINGS BUTTON
+    const btnGlove = this.add.graphics();
+    btnGlove.fillStyle(0x673ab7, 1);
+    btnGlove.fillRoundedRect(width / 2 + 10, height / 2 + 130, 225, 40, 8);
+    this.add.text(width / 2 + 122, height / 2 + 150, '🧤 GUANTE', {
+      font: 'bold 16px "Outfit", "Inter", sans-serif',
+      color: '#ffffff'
+    }).setOrigin(0.5);
+    const gloveZone = this.add.zone(width / 2 + 122, height / 2 + 150, 225, 40).setInteractive({ useHandCursor: true });
+    gloveZone.on('pointerdown', () => {
+      AudioService.playSFX('click');
+      this.cameras.main.fadeOut(300, 10, 5, 27);
+      this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+        this.scene.start('GloveConfigScene');
+      });
+    });
     
     resetZone.on('pointerdown', () => {
       AudioService.playSFX('incorrect'); // Use incorrect sound to denote destructive action

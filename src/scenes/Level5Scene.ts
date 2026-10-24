@@ -167,6 +167,14 @@ export class Level5Scene extends Phaser.Scene {
     this.setupDeflectors();
     this.updateLasers();
     this.createDialogPanel();
+
+    // Atajo: P pasa el nivel al instante (para pruebas)
+    this.input.keyboard?.addKey('P').on('down', () => {
+      if (!this.quizActive) {
+        this.quizActive = true;
+        this.completeLevel();
+      }
+    });
   }
 
   private drawStarCore(color: number): void {

@@ -146,6 +146,14 @@ export class Level2Scene extends Phaser.Scene {
     // Keyboard controls
     if (this.input.keyboard) {
       this.cursors = this.input.keyboard.createCursorKeys();
+
+      // Atajo: P pasa el nivel al instante (para pruebas)
+      this.input.keyboard.addKey('P').on('down', () => {
+        if (!this.quizActive) {
+          this.quizActive = true;  // detiene la nave y los asteroides
+          this.completeLevel();
+        }
+      });
     }
 
     // Collisions
@@ -301,7 +309,8 @@ export class Level2Scene extends Phaser.Scene {
     const controlType = this.registry.get('controlType') || 'keyboard';
     const speed = 250;
 
-    if (controlType === 'pointer') {
+    // Con toque/mouse presionado se sigue el dedo; si no, flechas (teclado o guante)
+    if (controlType === 'pointer' && this.input.activePointer.isDown) {
       this.probe.setAngularVelocity(0);
       const pointer = this.input.activePointer;
       if (pointer.isDown) {

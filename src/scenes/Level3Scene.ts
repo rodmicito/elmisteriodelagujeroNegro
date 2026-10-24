@@ -194,6 +194,14 @@ export class Level3Scene extends Phaser.Scene {
       }
     });
 
+    // Atajo: P pasa el nivel al instante (para pruebas)
+    this.input.keyboard?.addKey('P').on('down', () => {
+      if (!this.quizActive) {
+        this.quizActive = true;  // detiene el contador de tiempo
+        this.completeLevel();
+      }
+    });
+
     this.createDialogPanel();
   }
 

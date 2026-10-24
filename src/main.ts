@@ -12,6 +12,8 @@ import { EncyclopediaScene } from './scenes/EncyclopediaScene';
 import { BadgesScene } from './scenes/BadgesScene';
 import { ConfigScene } from './scenes/ConfigScene';
 import { CreditsScene } from './scenes/CreditsScene';
+import { GloveConfigScene } from './scenes/GloveConfigScene';
+import { SensorHud, SensorService } from './sensor/SensorHud';
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -42,6 +44,7 @@ const config: Phaser.Types.Core.GameConfig = {
     EncyclopediaScene,
     BadgesScene,
     ConfigScene,
+    GloveConfigScene,
     CreditsScene
   ]
 };
@@ -49,4 +52,6 @@ const config: Phaser.Types.Core.GameConfig = {
 // Start the game when the window loads
 window.addEventListener('load', () => {
   new Phaser.Game(config);
+  SensorHud.init();      // panel con las lecturas del guante (F5 / F6)
+  SensorService.init();  // conexión con el guante (ESP32 + MPU6050)
 });
